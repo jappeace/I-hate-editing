@@ -1,0 +1,24 @@
+#+TITLE: I hate video editing
+Therefore I present a small script that glues your video together
+based on unix order file names:
+
++ 1-opening.wav
++ 1-openingimg.png
++ 2-intromusic.wav
++ 3-wittycomments.wav
++ 2..3-introandcommentimg.png
+
+This will make a video starting with the opening.wav where the openingimg 
+will be displayed untill the wav ends.
+It'll make the image sequences as long as their respective audio fragments.
+This is ideal for slideshow like videos.
+You can also have images span multiple audio fragments as seen in the 2..3
+example.
+
+It is already functional but you have to modifiy the path right now manually
+to the source directory you want to use.
+
+* TODO
+Probably add some kind of button to blender to select the directory and 
+execute the script. I wanted to make it command line only at first but 
+I'm not sure if you can pass parameters to blender.
