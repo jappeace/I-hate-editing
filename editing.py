@@ -17,43 +17,71 @@
 
 import os
 
+import bpy
 from bpy import context
-scene = context.scene
 
-path = "/home/jappie/Videos/C/"
-files = os.listdir(path)
-files.sort()
+def import_project():
+    scene = context.scene
 
-# create the sequencer data
-scene.sequence_editor_create()
-seqs = scene.sequence_editor.sequences
+    path = "/home/jappie/Videos/C/"
+    files = os.listdir(path)
+    files.sort()
 
-last_end = 1
-for (num, file) in enumerate([f for f in files if f.endswith('.wav')]):
-    filename_parts = file.split('-')
-    desired_order = filename_parts[0]
-    
-    seq = seqs.new_sound(
-            name=str(file),
-            filepath=os.path.join(path, file),
-            channel=1, frame_start=last_end)
+    # create the sequencer data
+    scene.sequence_editor_create()
+    seqs = scene.sequence_editor.sequences
+    last_end = 1
+    for (num, file) in enumerate([f for f in files if f.endswith('.wav')]):
+        filename_parts = file.split('-')
+        desired_order = filename_parts[0]
 
-    def isInRange(imgfilename):
-        range = imgfilename.split('-')[0].split('..')
-        if len(range) <= 1:
-            return False
-        result = int(range[0]) <= int(desired_order) <= int(range[1])
-        return result
+        seq = seqs.new_sound(
+                name=str(file),
+                filepath=os.path.join(path, file),
+                channel=1, frame_start=last_end)
 
-    for (count, img) in enumerate([f for f in files if (f.startswith(desired_order) or isInRange(f)) and (f.endswith('.png') or f.endswith('.jpg'))]):
-        imgseq = seqs.new_image(
-            name=img,
-            filepath=os.path.join(path, img),
-            channel=count+2,
-            frame_start=last_end,
-        )
-        imgseq.frame_final_end = seq.frame_final_end
+        def isInRange(imgfilename):
+            range = imgfilename.split('-')[0].split('..')
+            if len(range) <= 1:
+                return False
+            result = int(range[0]) <= int(desired_order) <= int(range[1])
+            return result
 
-    last_end = seq.frame_final_end
+        for (count, img) in enumerate([f for f in files if (f.startswith(desired_order) or isInRange(f)) and (f.endswith('.png') or f.endswith('.jpg'))]):
+            imgseq = seqs.new_image(
+                name=img,
+                filepath=os.path.join(path, img),
+                channel=count+2,
+                frame_start=last_end,
+            )
+            imgseq.frame_final_end = seq.frame_final_end
 
-scene.frame_end = last_end
+        last_end = seq.frame_final_end
+
+    print("blah")
+    scene.frame_end = last_end
+button_name = "project.importbutton"
+class ImportProjectButton(bpy.types.Operator):
+    bl_idname = button_name
+    bl_label = "Say Hello"
+ 
+    def execute(self, context):
+        print("Hello world!")
+        import_project()
+        return {'FINISHED'}
+
+def menu_func(self, context):
+    self.layout.operator(button_name, 
+        text="Quick import", 
+        icon='MESH_TORUS')
+ 
+def register():
+   bpy.utils.register_module(__name__)
+   bpy.types.SEQUENCER_MT_add.prepend(menu_func)
+ 
+def unregister():
+    bpy.utils.unregister_module(__name__)
+    bpy.types.SEQUENCER_MT_add.remove(menu_func)
+ 
+if __name__ == "__main__":
+    register()
