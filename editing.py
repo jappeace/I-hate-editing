@@ -13,14 +13,16 @@
 
 # You should have received a copy of the GNU General Public License
 # along with this program.If not, see <http:#www.gnu.org/licenses/>.
-
+bl_info = {
+    "name": "I-hate-editing",
+    "category": "Import-Export",
+}
 
 import os
 
 import bpy
-from bpy import context
 
-def import_project(path):
+def import_project(path, context):
     """Parse filenames and jam relevant files directly in the sequencer"""
 
     scene = context.scene
@@ -76,7 +78,7 @@ class ImportProjectButton(bpy.types.Operator):
     directory = bpy.props.StringProperty(subtype="DIR_PATH")
  
     def execute(self, context):
-        import_project(self.directory)
+        import_project(self.directory, context)
         return {'FINISHED'}
     def invoke(self, context, event):
         context.window_manager.fileselect_add(self)
