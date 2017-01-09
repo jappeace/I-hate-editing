@@ -15,10 +15,15 @@ This is ideal for slideshow like videos.
 You can also have images span multiple audio fragments as seen in the 2..3
 example.
 
-It is already functional but you have to modifiy the path right now manually
-to the source directory you want to use.
+* Usage
+Follow the standard install [[https://blender.stackexchange.com/questions/1688/installing-an-addon][instructions (from file, editing.py).]] 
+To start the process go to the sequencer, press add and then you should see a
+quick import option (marked by a torus). A file dialogue should appear,
+go to the folder where your video project is located,
+then press quick import,
+no need to select a file (don't really know what would happen if you'd did).
 
-* TODO
-Probably add some kind of button to blender to select the directory and 
-execute the script. I wanted to make it command line only at first but 
-I'm not sure if you can pass parameters to blender.
+* TODO list
+
++ Add background support (I work with transparant images mostly)
++ Add background music support
