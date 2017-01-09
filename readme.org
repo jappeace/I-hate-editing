@@ -23,7 +23,7 @@ go to the folder where your video project is located,
 then press quick import,
 no need to select a file (don't really know what would happen if you'd did).
 
-* TODO list
+* todo list
 
 + Add background support (I work with transparant images mostly)
 + Add background music support
