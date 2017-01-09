@@ -27,3 +27,8 @@ no need to select a file (don't really know what would happen if you'd did).
 
 + Add background support (I work with transparant images mostly)
 + Add background music support
++ I also want to include a menu option for youtube uplaoder (show a dialogue in
+  blender to do that instead of crappy youtube UI and then use the youtube
+  uplaoder script, also make it possible to do rendering in one go),
+  but perhaps that will become another plugin sinds these things aren't really
+  related.
