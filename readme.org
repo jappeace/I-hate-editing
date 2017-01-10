@@ -1,6 +1,11 @@
 #+TITLE: I hate video editing
 Therefore I present a small script that glues your video together
-based on unix order file names:
+based on unix order file names.
+This tool should be seen to get your assets roughly (or exactly) in the right location,
+you probably still need to check if everything works out, but you can just 
+do that according to your regular workflow.
+
+Say you have the following project structure:
 
 + 1-opening.wav
 + 1-openingimg.png
@@ -15,6 +20,25 @@ This is ideal for slideshow like videos.
 You can also have images span multiple audio fragments as seen in the 2..3
 example.
 
+There is now also automatic alpha blending support, in other words, easily add
+backgrounds.
+Multiple images that are on the same sound will be blended according to the
+file system order.
+So say you have the following files:
+
++ 1-opening.wav
++ 1-openingimg.png
++ 2-intromusic.wav
++ 2-1-topimagelayer.png
++ 2-2-botimagelayer.png
++ 3-talk-about-background.wav
++ 1..-0-background.png
+
+The background image gets sorted on the bottom because in the layers
+because it comes first in the alpha(numerical)bet.
+As shown in the example you can add more images on top of each other for the
+same sound.
+
 * Usage
 Follow the standard install [[https://blender.stackexchange.com/questions/1688/installing-an-addon][instructions (from file, editing.py).]] 
 To start the process go to the sequencer, press add and then you should see a
@@ -25,10 +49,9 @@ no need to select a file (don't really know what would happen if you'd did).
 
 * todo list
 
-+ Add background support (I work with transparant images mostly)
 + Add background music support
-+ I also want to include a menu option for youtube uplaoder (show a dialogue in
++ I also want to include a menu option for youtube uploader (show a dialogue in
   blender to do that instead of crappy youtube UI and then use the youtube
   uplaoder script, also make it possible to do rendering in one go),
-  but perhaps that will become another plugin sinds these things aren't really
+  but perhaps that will become another plugin since these things aren't really
   related.
