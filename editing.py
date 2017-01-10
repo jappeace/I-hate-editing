@@ -22,6 +22,7 @@ import os
 
 import bpy
 
+_channel_offset = 2
 def import_project(path, context):
     """Parse filenames and jam relevant files directly in the sequencer"""
 
@@ -54,16 +55,32 @@ def import_project(path, context):
                 return True
             return int(desired_order) <= int(range[1])
 
+        background_seq = None
         for (count, img) in enumerate([f for f in files if (f.startswith(desired_order) or isInRange(f)) and (f.endswith('.png') or f.endswith('.jpg'))]):
+            counts = count * 2
             imgseq = seqs.new_image(
                 name=img,
                 filepath=os.path.join(path, img),
-                channel=count+2,
+                channel=counts + _channel_offset,
                 frame_start=last_end,
             )
             imgseq.frame_final_end = seq.frame_final_end
+            if background_seq != None:
+                effect = seqs.new_effect(
+                    name= "aphad %s and %s" % (background_seq.name, imgseq.name),
+                    type='ALPHA_OVER',
+                    frame_start=last_end,
+                    frame_end = seq.frame_final_end,
+                    channel=counts + 1 + _channel_offset,
+                    seq1 = background_seq,
+                    seq2 = imgseq
+                )
+                background_seq = effect
+            else:
+                background_seq = imgseq
 
         last_end = seq.frame_final_end
+
 
     print("blah")
     scene.frame_end = last_end
