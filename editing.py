@@ -45,10 +45,14 @@ def import_project(path, context):
 
         def isInRange(imgfilename):
             range = imgfilename.split('-')[0].split('..')
+            print("%s: %i" % (imgfilename, len(range)))
             if len(range) <= 1:
                 return False
-            result = int(range[0]) <= int(desired_order) <= int(range[1])
-            return result
+            if int(range[0]) > int(desired_order):
+                return False
+            if range[1] == '':
+                return True
+            return int(desired_order) <= int(range[1])
 
         for (count, img) in enumerate([f for f in files if (f.startswith(desired_order) or isInRange(f)) and (f.endswith('.png') or f.endswith('.jpg'))]):
             imgseq = seqs.new_image(
@@ -83,6 +87,7 @@ class ImportProjectButton(bpy.types.Operator):
     def invoke(self, context, event):
         context.window_manager.fileselect_add(self)
         return {'RUNNING_MODAL'}
+
 def menu_func(self, context):
     """
     Tell blender how the menu item looks in a list.
