@@ -36,6 +36,7 @@ So say you have the following files:
 
 The background image gets sorted on the bottom because in the layers
 because it comes first in the alpha(numerical)bet.
+(Note also I didn't close the range, script interprets that as never ending).
 As shown in the example you can add more images on top of each other for the
 same sound.
 
