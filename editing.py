@@ -19,8 +19,36 @@ bl_info = {
 }
 
 import os
-
 import bpy
+
+
+def menu_func(self, context):
+    """
+    Tell blender how the menu item looks in a list.
+    Note that in this case self becomes the list, 
+    see the register function where this is used.
+    Also attaches ImportProjectButton to this item because they share idname
+    """
+    self.layout.operator(_button_name, 
+        text="Quick import", 
+        icon='MESH_TORUS')
+ 
+def register():
+    """
+    entry point
+    Attaches menu function to the right list 
+    (name can be found by hovering over items in blender)
+    """
+    bpy.utils.register_module(__name__)
+    bpy.types.SEQUENCER_MT_add.prepend(menu_func)
+ 
+def unregister():
+    """Tell blender how to unload gracefully"""
+    bpy.utils.unregister_module(__name__)
+    bpy.types.SEQUENCER_MT_add.remove(menu_func)
+ 
+if __name__ == "__main__":
+    register()
 
 _channel_offset = 2
 def import_project(path, context):
@@ -104,31 +132,3 @@ class ImportProjectButton(bpy.types.Operator):
     def invoke(self, context, event):
         context.window_manager.fileselect_add(self)
         return {'RUNNING_MODAL'}
-
-def menu_func(self, context):
-    """
-    Tell blender how the menu item looks in a list.
-    Note that in this case self becomes the list, 
-    see the register function where this is used.
-    Also attaches ImportProjectButton to this item because they share idname
-    """
-    self.layout.operator(_button_name, 
-        text="Quick import", 
-        icon='MESH_TORUS')
- 
-def register():
-    """
-    entry point
-    Attaches menu function to the right list 
-    (name can be found by hovering over items in blender)
-    """
-    bpy.utils.register_module(__name__)
-    bpy.types.SEQUENCER_MT_add.prepend(menu_func)
- 
-def unregister():
-    """Tell blender how to unload gracefully"""
-    bpy.utils.unregister_module(__name__)
-    bpy.types.SEQUENCER_MT_add.remove(menu_func)
- 
-if __name__ == "__main__":
-    register()
